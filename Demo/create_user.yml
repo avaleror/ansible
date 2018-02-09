@@ -2,8 +2,8 @@
 - hosts: localhost
 
   vars:
-    create_user_name: "{{ new_user }}"
-    create_user_password: 'secret'
+    create_user_name: 'testuser1'
+    create_user_password: 'mypassword'
     groups_url: "{{ manageiq.api_url }}/api/groups?expand=resources&attributes=description,href,id&filter[]=description='EvmGroup-user'"
     user_url: "{{ manageiq.api_url }}/api/users"
 
@@ -22,7 +22,7 @@
 
     - set_fact: group_id="{{ token_output.json.resources[0].id }}"
 
-    - name: Call to CloudForms to create the user "{{ new_user }}"
+    - name: Call to CloudForms to create the user 'testuser1'
       uri:
         url: "{{ user_url }}"
         method: POST
