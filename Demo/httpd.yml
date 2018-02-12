@@ -1,6 +1,6 @@
 ---
 - name: Install Apache and start the service
-  hosts: "{{ hosts }}"
+  hosts: "{{ vminventory }}"
   vars:
     web_pkg: httpd
     firewall_pkg: firewalld
