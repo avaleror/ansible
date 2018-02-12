@@ -47,5 +47,5 @@
   tasks:
     - name: Ensure the webserver is reachable
       uri:
-        url: http://servera.lab.example.com
+        url: http://"{{ vminventory }}"
         status_code: 200
