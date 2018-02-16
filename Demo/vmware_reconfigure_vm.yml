@@ -2,7 +2,7 @@
 - hosts: all
 
   tasks:
-    - name: "Reconfigure {{ guest_name }} "
+    - name: Reconfigure " {{ guest_name }} "
       vsphere_guest:
         validate_certs: False      
         vcenter_hostname: "{{ vcenter_server }}"
