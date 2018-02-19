@@ -1,0 +1,14 @@
+---
+- hosts: all
+
+  tasks:
+    - name: "Reconfigure {{ guest_name }} "
+      vsphere_guest:
+        validate_certs: False      
+        vcenter_hostname: "{{ vcenter_server }}"
+        guest: "{{ guest_name }}"
+        state: reconfigured
+        vm_hardware:
+            num_cpus: 2
+            memory_mb: 2048
+      delegate_to: localhost
