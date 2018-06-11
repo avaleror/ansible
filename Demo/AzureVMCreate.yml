@@ -1,0 +1,62 @@
+# Description
+# ===========
+# This playbook create an Azure VM with public IP, and open 22 port for SSH and adds ssh key, creates a new virtual net and subnet
+
+
+- name: Create Azure VM
+  hosts: localhost
+  connection: local
+  vars:
+    resource_group: Test_Azure
+    vm_name: testvmPB
+    location: westeurope
+    ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRR7jgEJkp38Td3KgFe3FgTi6N41Bghu/cKUacdSlyCiL8T8HGHtdXCHPS/czlrmoQbfmvdsv2tkEdv8cvBv93dmqu/LScF9IGQIpE4RIRTNo/jJhloFQuzSaub/9paVTGNR5qi8spHLKdsHJs9MULbcD5hlFivXmVaBDwVu+BYGZHjmpWZqdcm0gE6g/ooxv0k7C/TntjkVhIvrxodJMQJHFMpwg6I+hPW0+Ca0n5yWxVLcDs43J4cbT7uMVVRGA92jeQodtZjnm//nsxNa1UrQ3K5WsDhNCgVAOh12Q+3TBHv31OJsbaD5r+VGHqurSE2Jg/2suizPY6zS//Rx0B root@cfme-azure-1"
+  tasks:
+  - name: Create virtual network
+    azure_rm_virtualnetwork:
+      resource_group: "{{ resource_group }}"
+      name: "{{ vm_name }}"
+      address_prefixes: "10.0.0.0/16"
+  - name: Add subnet
+    azure_rm_subnet:
+      resource_group: "{{ resource_group }}"
+      name: "{{ vm_name }}"
+      address_prefix: "10.0.1.0/24"
+      virtual_network: "{{ vm_name }}"
+  - name: Create public IP address
+    azure_rm_publicipaddress:
+      resource_group: "{{ resource_group }}"
+      allocation_method: Static
+      name: "{{ vm_name }}"
+  - name: Create Network Security Group that allows SSH
+    azure_rm_securitygroup:
+      resource_group: "{{ resource_group }}"
+      name: "{{ vm_name }}"
+      rules:
+        - name: SSH
+          protocol: Tcp
+          destination_port_range: 22
+          access: Allow
+          priority: 1001
+          direction: Inbound
+  - name: Create virtual network inteface card
+    azure_rm_networkinterface:
+      resource_group: "{{ resource_group }}"
+      name: "{{ vm_name }}"
+      virtual_network: "{{ vm_name }}"
+      subnet: "{{ vm_name }}"
+      public_ip_name: "{{ vm_name }}"
+      security_group: "{{ vm_name }}"
+  - name: Create VM
+    azure_rm_virtualmachine:
+      resource_group: "{{ resource_group }}"
+      name: "{{ vm_name }}"
+      vm_size: Standard_DS1_v2
+      admin_username: azureuser
+      admin_password: Password@123
+      network_interfaces: "{{ vm_name }}"
+      image:
+        offer: UbuntuServer
+        publisher: Canonical
+        sku: 16.04-LTS
+        version: latest
