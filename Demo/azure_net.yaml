@@ -3,8 +3,8 @@
   hosts: localhost
   connection: local
   vars:
-    resource_group: {{resource_group}}
-    vm_name: {{vm_name}}
+    resource_group: "{{ resource_group }}"
+    vm_name: "{{ vm_name }}"
     location: westeurope
    
   tasks:
