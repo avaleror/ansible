@@ -57,8 +57,8 @@
       uri:
         url: "{{ provider_url }}"
         method: POST
-        user: "{{ miq_username }}"
-        password: "{{ miq_password }}"
+        user: "{{ manageiq.miq_username }}"
+        password: "{{ manageiq.miq_password }}"
         body:
           action: refresh
         body_format: json
@@ -78,8 +78,8 @@
       uri:
         url: "{{ task_url }}"
         method: GET
-        user: "{{ miq_username }}"
-        password: "{{ miq_password }}"
+        user: "{{ manageiq.miq_username }}"
+        password: "{{ manageiq.miq_password }}"
         validate_certs: False
         headers:
           #X-Auth-Token: "{{ manageiq.api_token }}"
@@ -128,8 +128,8 @@
       uri:
         url: "{{ manageiq.api_url }}/api/services"
         method: POST
-        user: "{{ miq_username }}"
-        password: "{{ miq_password }}"
+        user: "{{ manageiq.miq_username }}"
+        password: "{{ manageiq.miq_password }}"
         body_format: json
         body:
           action: add_resource
