@@ -1,0 +1,11 @@
+---
+- name: Install Package
+  vars: 
+    package_name: httpd
+    pkghosts: all
+
+  hosts: "{{ pkghosts }}" 
+  
+  tasks:
+  - name: install package
+    yum: name={{ package_name }} state=present
