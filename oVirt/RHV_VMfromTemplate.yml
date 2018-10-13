@@ -1,5 +1,5 @@
 ---
-  - hosts: "{{limit}}"
+  - hosts: all
   
     tasks:
       - name: Example to provision from image/template
