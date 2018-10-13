@@ -2,28 +2,9 @@
   - hosts: all
   
     tasks:
-      - name: Example to provision from image/template
-        ovirt:
-          user: admin@internal
-          url: https://rhvm.example.com
-          instance_name: ansiblevm001
-          password: r3dh4t1!
-          image: RHEL7
-          state: started
-          zone: Default
-          hostname: testansible
-          domain: example.com
-          region: Default
-          instance_cpus: 1
-          instance_nic: nic1
-          instance_network: ovirtmgmt
-          instance_mem: 2048
-          instance_cores: 2
-          instance_os: rhel_7x64
-          disk_alloc: thin
-          sdomain: data
-          disk_int: virtio
-          ip: 192.168.2.100
-          netmask: 255.255.255.0
-          rootpw: r3dh4t1!
-          resource_type: template
+      - name: Creates a new Virtual Machine from template named 'rhel7'
+        ovirt_vms:
+          state: present
+          name: mytestvm001
+          template: RHEL7
+          cluster: Default
