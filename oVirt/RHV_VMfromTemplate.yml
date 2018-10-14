@@ -17,7 +17,6 @@
           template: RHEL7
           cluster: Default
 
-    always:
       - name: Always revoke the SSO token
         ovirt_auth:
           state: absent
