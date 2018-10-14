@@ -1,23 +1,25 @@
 ---
-  - name: oVirt Infra
-    hosts: localhost
-    connection: local
+- name: oVirt VM from Template
+  hosts: localhost
+  connection: local
 
-    taks:
-      - name: Obtain SSO token with using username/password credentials
-        ovirt_auth:
-          url: https://rhvm.example.com/ovirt-engine/api
-          username: admin@internal
-          password: "{{ ovirt_password }}"
+  tasks:
 
-      - name: Creates a new Virtual Machine from template named 'rhel7'
-        ovirt_vms:
-          state: present
-          name: mytestvm001
-          template: RHEL7
-          cluster: Default
+  - name: Obtain SSO token with using username/password credentials
+    ovirt_auth:
+      url: https://rhvm.example.com/ovirt-engine/api
+      username: admin@internal
+      password: "{{ ovirt_password }}"
+      insecure: true
 
-      - name: Always revoke the SSO token
-        ovirt_auth:
-          state: absent
-          ovirt_auth: "{{ ovirt_auth }}"
+  - name: Creates a new Virtual Machine from template named 'rhel7'
+    ovirt_vms:
+      state: present
+      name: "{{ vm_name }}"
+      template: RHEL7
+      cluster: Default
+
+  - name: Always revoke the SSO token
+    ovirt_auth:
+      state: absent
+      ovirt_auth: "{{ ovirt_auth }}"
