@@ -1,10 +1,23 @@
 ---
-  - hosts: all
-  
-    tasks:
+  - hosts: localhost
+
+    taks:
+      - name: Obtain SSO token with using username/password credentials
+        ovirt_auth:
+          url: https://ovirt.example.com/ovirt-engine/api
+          username: admin@internal
+          ca_file: ca.pem
+          password: "{{ ovirt_password }}"
+
       - name: Creates a new Virtual Machine from template named 'rhel7'
         ovirt_vms:
           state: present
           name: mytestvm001
           template: RHEL7
           cluster: Default
+
+    always:
+      - name: Always revoke the SSO token
+        ovirt_auth:
+          state: absent
+          ovirt_auth: "{{ ovirt_auth }}"
